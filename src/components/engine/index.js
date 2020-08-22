@@ -4,10 +4,34 @@ import { useEvent } from '../../hooks';
 
 function CreateEngine(setState) {
     this.settings = {
-        tile: 100
+        tile: 10
     };
 
     this.stage = 0;
+    this.jump = false;
+    this.direction = 'up';
+    this.position = 0;
+    this.max = this.settings.tile * 30;
+
+    const doJump = () => {
+        if (!this.jump) {
+            this.position = 0;
+            this.direction = 'up';
+            return;
+        }
+        if (this.direction === 'down' && this.position <= 0) {
+            this.jump = false;
+            this.position = 0;
+            this.direction = 'up';
+            return;
+        }
+        if (this.position >= this.max) this.direction = 'down';
+        if (this.direction === 'up') {
+            this.position += this.settings.tile;
+        } else {
+            this.position -= this.settings.tile;
+        }
+    }
 
     this.repaint = () => {
         this.stage += this.settings.tile;
