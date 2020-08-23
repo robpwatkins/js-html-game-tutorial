@@ -35,18 +35,23 @@ function CreateEngine(setState) {
 
     this.repaint = () => {
         this.stage += this.settings.tile;
-        setState({ stage: this.stage });
+        doJump();
+        setState({ stage: this.stage, jump: this.position });
         return requestAnimationFrame(this.repaint);
     };
 
     this.repaint();
     return () => ({
-        
+        jump: () => {
+            if (!this.jump) {
+                this.jump = true;
+            }
+        }
     });
 }
 
 export default function Engine() {
-    const [gameState, setGameState] = useState({ stage: 0 });
+    const [gameState, setGameState] = useState({ stage: 0, jump: 0 });
     const [start, setStart] = useState(false);
     const [started, setStarted] = useState(false);
     const [engine, setEngine] = useState(null);
@@ -79,10 +84,11 @@ export default function Engine() {
         <div
             className={styles.container}
         >
-            <div className={styles.stage}
-            style={{
-                transform: `translate(${gameState.stage}px, 0px)`
-            }}
+            <div 
+                className={styles.stage}
+                style={{
+                    transform: `translate(${gameState.stage}px, 0px)`
+                }}
             >
                 <span
                     className={styles.character}
