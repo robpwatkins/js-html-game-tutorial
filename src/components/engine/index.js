@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styles from './engine.module.scss';
 import { useEvent } from '../../hooks';
 
+const BLOCKS = [
+    140,
+    250,
+    390
+];
+
+const JUMP_VELOCITY = 1.4;
+
 function CreateEngine(setState) {
     this.settings = {
         tile: 10
@@ -11,7 +19,8 @@ function CreateEngine(setState) {
     this.jump = false;
     this.direction = 'up';
     this.position = 0;
-    this.max = this.settings.tile * 30;
+    this.max = this.settings.tile * 40;
+    this.blocks = BLOCKS.map(b => (b * this.settings.tile));
 
     const doJump = () => {
         if (!this.jump) {
